@@ -441,9 +441,9 @@ class SftpClient {
                 modifyTime: item.attrs.mtime * 1000,
                 accessTime: item.attrs.atime * 1000,
                 rights: {
-                  user: item.longname.slice(1, 4).replaceAll(reg, ''),
-                  group: item.longname.slice(4, 7).replaceAll(reg, ''),
-                  other: item.longname.slice(7, 10).replaceAll(reg, ''),
+                  user: item.longname.slice(1, 4).replace(reg, ''),
+                  group: item.longname.slice(4, 7).replace(reg, ''),
+                  other: item.longname.slice(7, 10).replace(reg, ''),
                 },
                 owner: item.attrs.uid,
                 group: item.attrs.gid,
