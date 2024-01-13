@@ -49,8 +49,10 @@
     "winston": "^3.11.0"
   },
   "dependencies": {
+    "@types/ssh2": "^1.11.18",
     "concat-stream": "^2.0.0",
     "promise-retry": "^2.0.1",
     "ssh2": "^1.15.0"
-  }
+  },
+  "types": "index.d.ts"
 }
