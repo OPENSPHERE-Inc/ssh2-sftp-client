@@ -29,3 +29,4 @@ debug.log
 deno.json
 id_ed25519*
 test/testData
+yarn.lock

@@ -1540,6 +1540,50 @@ class SftpClient {
       this.endCalled = false;
     });
   }
+
+  _xdf(aPath, addListeners = true) {
+    let listeners;
+    return new Promise((resolve, reject) => {
+      const cb = (err, stats) => {
+        if (err) {
+          reject(this.fmtError(`${err.message} ${aPath}`, '_xdf', err.code));
+        } else {
+          const result = {
+            blockSize: stats.f_bsize,
+            fragSize: stats.f_frsize,
+            fsSize: stats.f_blocks * stats.f_frsize,
+            freeSize: stats.f_bfree * stats.f_frsize,
+            freeUserSize: stats.f_bavail * stats.f_frsize,
+            numFiles: stats.f_files,
+            freeFiles: stats.f_ffree,
+            freeUserFiles: stats.f_favail,
+            fsid: stats.f_sid,
+            flag: stats.f_flag,
+            maxNameLen: stats.f_namemax,
+          };
+          this.debugMsg('_xdf: result = ', result);
+          resolve(result);
+        }
+      };
+      if (addListeners) {
+        listeners = addTempListeners(this, '_xdf', reject);
+      }
+      this.sftp.ext_openssh_statvfs(aPath, cb);
+    }).finally(() => {
+      if (addListeners) {
+        removeTempListeners(this, listeners, '_xstat');
+      }
+    });
+  }
+
+  async df(remotePath) {
+    try {
+      haveConnection(this, 'df');
+      return await this._xdf(remotePath);
+    } catch (err) {
+      throw err.custom ? err : this.fmtError(err, 'stat', err.code);
+    }
+  }
 }
 
 module.exports = SftpClient;
