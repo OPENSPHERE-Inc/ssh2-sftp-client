@@ -1,5 +1,6 @@
 {
-  "name": "ssh2-sftp-client",
+  "name": "@opensphere-inc/ssh2-sftp-client",
+  "private": false,
   "version": "10.0.3",
   "description": "ssh2 sftp client for node",
   "main": "src/index.js",
